@@ -1,3 +1,6 @@
+# Code made by https://github.com/Guitarman9119/Raspberry-Pi-Pico-/blob/93aafda64b920c0c002f56c0c00fb14f8326169c/SSD1306%20OLED%20Display/animation.py
+# Modified by chatgpt to not use a list (fills up pico storage)
+
 from machine import Pin, I2C
 from ssd1306 import SSD1306_I2C
 import framebuf, time
