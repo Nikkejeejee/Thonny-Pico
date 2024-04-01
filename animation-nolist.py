@@ -1,6 +1,3 @@
-# Code made by https://github.com/Guitarman9119/Raspberry-Pi-Pico-/blob/93aafda64b920c0c002f56c0c00fb14f8326169c/SSD1306%20OLED%20Display/animation.py
-# Modified by chatgpt to not use a list (fills up pico storage)
-
 from machine import Pin, I2C
 from ssd1306 import SSD1306_I2C
 import framebuf, time
@@ -11,19 +8,16 @@ oled_height = 64
 oled = SSD1306_I2C(oled_width, oled_height, i2c)
 
 while True:
-    for n in range(1, 28):
-        with open('/youtube/image%s.pbm' % n, 'rb') as f:
-            f.readline()  # Magic number
-            f.readline()  # Creator comment
-            dimensions = f.readline().split()  # Read dimensions
-            width, height = int(dimensions[0]), int(dimensions[1])
-            data = bytearray(f.read())
-        
-        fbuf = framebuf.FrameBuffer(data, width, height, framebuf.MONO_HLSB)
-        
-        for y in range(height):  # Adjust display if image height is smaller
-            oled.fill_rect(0, y, width, 1, 0)
-        
-        oled.blit(fbuf, (oled_width - width) // 2, (oled_height - height) // 2)
-        oled.show()
-        time.sleep(0.01)  # Adjust sleep time as needed
+    for i in range(1, 20): # because there are 24 frames
+        file = open(f'/logo/img{i}.pbm', 'rb') # Reads file in binary = rb = ReadBinary
+        file.readline()
+        file.readline()
+        dimensions = file.readline().split()  # Read dimensions
+        width, height = int(dimensions[0]), int(dimensions[1])
+        img = bytearray(file.read())
+        file.close()  # Make sure to close the file
+        gif = framebuf.FrameBuffer(img, oled_width, oled_height, framebuf.MONO_HLSB)
+        oled.blit(gif, 0, 0)  # positioning gif
+        oled.show()  # Shows animation
+        time.sleep(0.00)  # Animation speed
+
